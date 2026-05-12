@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>돈 관리</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: sans-serif;
+      background:#f2f2f2;
+      padding:40px;
+    }
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:30px;
+    }
+
+    h1{
+      font-size:50px;
+    }
+
+    .add-btn{
+      background:black;
+      color:white;
+      border:none;
+      padding:20px 50px;
+      border-radius:15px;
+      font-size:30px;
+      cursor:pointer;
+    }
+
+    .cards{
+      display:flex;
+      gap:30px;
+      margin-bottom:50px;
+    }
+
+    .card{
+      background:white;
+      width:300px;
+      padding:30px;
+      border-radius:15px;
+    }
+
+    .card h2{
+      margin:0;
+      font-size:30px;
+    }
+
+    .money{
+      margin-top:30px;
+      font-size:45px;
+    }
+
+    .history{
+      background:white;
+      width:600px;
+      padding:30px;
+      border-radius:15px;
+    }
+
+    .history h2{
+      margin-bottom:30px;
+      font-size:35px;
+    }
+
+    .item{
+      margin-bottom:20px;
+    }
+
+    .item-name{
+      font-size:28px;
+    }
+
+    .plus{
+      color:#32d74b;
+      font-size:24px;
+    }
+
+    .minus{
+      color:red;
+      font-size:24px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top">
+    <h1>돈 관리</h1>
+
+    <button class="add-btn">
+      + 추가
+    </button>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <h2>총 수입</h2>
+      <div class="money">₩40,000,000</div>
+    </div>
+
+    <div class="card">
+      <h2>지출</h2>
+      <div class="money">₩500,000</div>
+    </div>
+
+    <div class="card">
+      <h2>잔액</h2>
+      <div class="money">₩39,500,000</div>
+    </div>
+
+  </div>
+
+  <div class="history">
+    <h2>거래 내역</h2>
+
+    <div class="item">
+      <div class="item-name">월급</div>
+      <div class="plus">₩40,000,000</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">교통비</div>
+      <div class="minus">₩50,000</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">식비</div>
+      <div class="minus">₩250,000</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">쇼핑</div>
+      <div class="minus">₩200,000</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
