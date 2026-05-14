@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>돈 관리</title>
+
+  <style>
+
+    body {
+      font-family: Arial;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .box {
+      background: white;
+      width: 350px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h2 {
+      text-align: center;
+      color: green;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-size: 15px;
+    }
+
+    .income {
+      background: #28a745;
+    }
+
+    .expense {
+      background: #dc3545;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background: #eee;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .deleteBtn {
+      background: black;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <h1>돈 관리</h1>
+
+    <h2 id="money">0원</h2>
+
+    <input type="text" id="text" placeholder="내용 입력">
+
+    <input type="number" id="amount" placeholder="금액 입력">
+
+    <div class="buttons">
+
+      <button class="income" onclick="addMoney(true)">
+        수입
+      </button>
+
+      <button class="expense" onclick="addMoney(false)">
+        지출
+      </button>
+
+    </div>
+
+    <ul id="list"></ul>
+
+  </div>
+
+  <script>
+
+    let total =
+      Number(localStorage.getItem("total")) || 0;
+
+    const money =
+      document.getElementById("money");
+
+    const list =
+      document.getElementById("list");
+
+    money.innerText = total + "원";
+
+    loadData();
+
+    function addMoney(isIncome) {
+
+      const text =
+        document.getElementById("text").value;
+
+      const amount =
+        Number(document.getElementById("amount").value);
+
+      if(text === "" || amount <= 0) {
+        alert("내용과 금액 입력!");
+        return;
+      }
+
+      if(isIncome) {
+        total += amount;
+      } else {
+        total -= amount;
+      }
+
+      money.innerText = total + "원";
+
+      const li =
+        document.createElement("li");
+
+      li.innerHTML = `
+        <span>
+          ${isIncome ? "수입" : "지출"}
+          | ${text}
+          | ${amount}원
+        </span>
+
+        <span class="deleteBtn">
+          삭제
+        </span>
+      `;
+
+      li.querySelector(".deleteBtn")
+        .addEventListener("click", function() {
+
+          if(isIncome) {
+            total -= amount;
+          } else {
+            total += amount;
+          }
+
+          money.innerText = total + "원";
+
+          li.remove();
+
+          saveData();
+
+        });
+
+      list.appendChild(li);
+
+      saveData();
+
+      document.getElementById("text").value = "";
+      document.getElementById("amount").value = "";
+
+    }
+
+    function saveData() {
+
+      localStorage.setItem("total", total);
+
+      localStorage.setItem(
+        "list",
+        list.innerHTML
+      );
+
+    }
+
+    function loadData() {
+
+      const savedList =
+        localStorage.getItem("list");
+
+      if(savedList) {
+
+        list.innerHTML = savedList;
+
+        const buttons =
+          document.querySelectorAll(".deleteBtn");
+
+        buttons.forEach(button => {
+
+          button.addEventListener("click", function() {
+
+            button.parentElement.remove();
+
+            saveData();
+
+          });
+
+        });
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>돈 관리</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 800px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .add-btn {
+      background: black;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .summary {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+    }
+
+    .money {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .transactions {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 50px;
+    }
+
+    .income {
+      color: green;
+      font-weight: bold;
+    }
+
+    .expense {
+      color: red;
+      font-weight: bold;
+    }
+
+    .chart-box {
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    canvas {
+      max-width: 400px;
+      margin: auto;
+      display: block;
+    }
+
+    .item {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top">
+    <h1>돈 관리</h1>
+    <button class="add-btn" onclick="addMoney()">+추가</button>
+  </div>
+
+  <!-- 요약 -->
+  <div class="summary">
+
+    <div>
+      <p>총 수입</p>
+      <div class="money" id="incomeText">₩0</div>
+    </div>
+
+    <div>
+      <p>지출</p>
+      <div class="money" id="expenseText">₩0</div>
+    </div>
+
+    <div>
+      <p>잔액</p>
+      <div class="money" id="balanceText">₩0</div>
+    </div>
+
+  </div>
+
+  <!-- 거래 내역 -->
+  <h2>거래 내역</h2>
+
+  <div class="transactions">
+
+    <div id="incomeList"></div>
+
+    <div id="expenseList"></div>
+
+  </div>
+
+  <!-- 차트 -->
+  <div class="chart-box">
+    <h2>지출 카테고리</h2>
+    <canvas id="moneyChart"></canvas>
+  </div>
+
+</div>
+
+<script>
+
+let totalIncome = 0;
+let totalExpense = 0;
+
+const incomeList = document.getElementById("incomeList");
+const expenseList = document.getElementById("expenseList");
+
+const incomeText = document.getElementById("incomeText");
+const expenseText = document.getElementById("expenseText");
+const balanceText = document.getElementById("balanceText");
+
+const ctx = document.getElementById('moneyChart');
+
+const chart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: ['수입', '지출'],
+    datasets: [{
+      data: [0, 0],
+      backgroundColor: ['green', 'red']
+    }]
+  }
+});
+
+function updateUI() {
+
+  incomeText.innerText = "₩" + totalIncome.toLocaleString();
+  expenseText.innerText = "₩" + totalExpense.toLocaleString();
+
+  let balance = totalIncome - totalExpense;
+
+  balanceText.innerText = "₩" + balance.toLocaleString();
+
+  chart.data.datasets[0].data = [totalIncome, totalExpense];
+  chart.update();
+}
+
+function addMoney() {
+
+  let type = prompt("수입 또는 지출 입력");
+
+  let name = prompt("항목 이름 입력");
+
+  let amount = Number(prompt("금액 입력"));
+
+  if (!type || !name || !amount) {
+    alert("다 입력해주세요!");
+    return;
+  }
+
+  const item = document.createElement("div");
+  item.classList.add("item");
+
+  if (type === "수입") {
+
+    totalIncome += amount;
+
+    item.innerHTML = `
+      <h3>${name}</h3>
+      <p class="income">+ ₩${amount.toLocaleString()}</p>
+    `;
+
+    incomeList.appendChild(item);
+
+  } else if (type === "지출") {
+
+    totalExpense += amount;
+
+    item.innerHTML = `
+      <h3>${name}</h3>
+      <p class="expense">- ₩${amount.toLocaleString()}</p>
+    `;
+
+    expenseList.appendChild(item);
+
+  } else {
+
+    alert("수입 또는 지출만 입력하세요!");
+    return;
+  }
+
+  updateUI();
+}
+
+updateUI();
+
+</script>
+
+</body>
+</html>
