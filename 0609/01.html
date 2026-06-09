@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>인라인 이벤트 모델</title>
     <script>
+    
         function green() {
             alert('안녕하세요~ 인라인 이벤트 모델 2');
         }
@@ -41,6 +42,13 @@
             
             img.src = "imgs/animal" + count + ".jpg";
             }, 2000);
+
+    
+            let a1 = document.getElementById('a1');
+            a1.onclick = function(event) {
+                // event.preventDefault(); // a 태그의 디폴트 이벤트 제거
+                return false; // a 태그의 디폴트 이벤트 제거
+            };
         }
     </script>
 </head>
@@ -51,5 +59,6 @@
     <button onmouseover="overChange(this)" onmouseout="outChange(this)">배경 및 글자색 변경</button>
     <img src="imgs/animal.jpg" width="400" height="300" onclick="changeImg(this)" style="cursor:pointer;">
     <img src="imgs/animal.jpg" width="400" height="300" id="img2">
+    <a href="https://www.naver.com/" id="a1">디폴트 이미지 제거</a>
 </body>
 </html>
